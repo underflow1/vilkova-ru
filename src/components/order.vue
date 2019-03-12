@@ -27,7 +27,7 @@
         Укажите, пожалуйста, контактные данные и&nbsp;количество книг:
       </p>
 
-      <div class="input">
+      <div class="input" style="margin-top: 2rem;">
         <div ref="nameTextfield" class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon">
           <i class="material-icons mdc-text-field__icon">perm_identity</i>
           <input v-model="form.name" type="text" class="mdc-text-field__input" required>
@@ -177,11 +177,19 @@ export default {
 
   form, .order-sended-message {
     max-width: 550px;
-    margin: 3rem auto 1rem auto;
+    margin: 2rem auto 0 auto;
+  }
+
+  p {
+    margin: 1rem 0;
   }
 
   .input {
-    margin-bottom: 1.4rem;
+    margin-top: 1rem;
+  }
+
+  .input {
+    margin-bottom: 1rem;
   }
 
   .mdc-text-field {
