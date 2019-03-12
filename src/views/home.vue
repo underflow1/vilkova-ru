@@ -1,15 +1,14 @@
 <template>
   <div class="home">
-    <p>
+    <div class="cover-top">
       <router-link to="/book/0">
         <img
           src="@/assets/cover.jpg"
-          class="cover"
           alt="Обложка книги"
         />
       </router-link>
-    </p>
-    <div style="text-align: center;">
+    </div>
+    <div style="margin: 1rem 0; text-align: center;">
       Ирина Вилкова<br>
       <h2 style="margin: 1rem 0;">стихиИя</h2>
       Издание второе<br>
@@ -29,6 +28,12 @@
         Купить книгу
       </button>
     </div>
+    <div class="cover-bottom">
+      <img
+          src="@/assets/cover-bottom.png"
+          alt="БИЗ MMXIX"
+        />
+      </div>
   </div>
 </template>
 
@@ -46,8 +51,20 @@ export default {
   @import "~@/assets/theme";
   @import "~@material/button/mdc-button";
 
-  .cover {
-    width: 100%;
-    height: auto;
+  .cover-top {
+    margin-bottom: 1.5rem;
+    img {
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  .cover-bottom {
+    text-align: center;
+    margin-top: 1.5rem;
+    img {
+      width: 83px;
+      height: 77px;
+    }
   }
 </style>
