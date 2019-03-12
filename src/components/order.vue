@@ -11,7 +11,7 @@
     <transition name="fade">
       <div v-if="orderSended" class="order-sended-message">
         <h2>Заказ принят!</h2>
-        <p>Курьер перезвонит вам по номеру {{ form.phone }} и&nbsp;договорится о&nbsp;встрече.</p>
+        <p>Курьер перезвонит вам по&nbsp;номеру {{ form.phone }} и&nbsp;договорится о&nbsp;встрече.</p>
       </div>
     </transition>
     
@@ -20,11 +20,11 @@
 
       <p>
         Стоимость книги: <big>{{ bookPrice }} руб.</big>,<br>
-        стоимость доставки курьером по Москве: <big>{{ deliveryPrice }} руб.</big>
+        доставка по&nbsp;Москве: <big>{{ deliveryPrice }}&nbsp;руб.</big>
       </p>
 
       <p>
-        Укажите, пожалуйста, контактные данные и желаемое количество книг.
+        Укажите, пожалуйста, контактные данные и&nbsp;количество книг:
       </p>
 
       <div class="input">
@@ -177,11 +177,11 @@ export default {
 
   form, .order-sended-message {
     max-width: 550px;
-    margin: 4rem auto 1rem auto;
+    margin: 3rem auto 1rem auto;
   }
 
   .input {
-    margin-bottom: 2.5rem;
+    margin-bottom: 1.4rem;
   }
 
   .mdc-text-field {

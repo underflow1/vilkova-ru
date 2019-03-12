@@ -145,7 +145,7 @@ export default {
 @import "./assets/app";
 
 .fade-enter-active {
-  transition: opacity 1s ease;
+  transition: opacity .3s ease;
 }
 .fade-enter, .fade-leave-to {
   opacity: 0;
