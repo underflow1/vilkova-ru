@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="<%= BASE_URL %>icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="<%= BASE_URL %>icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="<%= BASE_URL %>icons/favicon-16x16.png">
+
+    <!-- Add to home screen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Книга «стихиИя»">
+    <link rel="apple-touch-icon" href="<%= BASE_URL %>icons/apple-touch-icon-152x152.png">
+    <link rel="mask-icon" href="<%= BASE_URL %>icons/safari-pinned-tab.svg" color="#5bbad5">
+   
+    <meta name="msapplication-TileColor" content="#edead9">
+
+    <link rel="manifest" href="<%= BASE_URL %>manifest.json">
+    <meta name="theme-color" content="#080e1d">
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <!--[if IE]><link rel="shortcut icon" href="/icons/favicon-32x32.png"><![endif]-->
+
+    <title>Ирина Вилкова</title>
+
+    <meta property="og:title" content="Книга «стихиИя»" />
+    <meta property="og:description" content="Ирина Вилкова" />
+    <meta property="og:image" content="http://vilkova.ru<%= BASE_URL %>cover.jpg" />
+
+    <meta name="Description" content="Ирина Вилкова">
+  </head>
+  <body class="mdc-typography" style="background-color: #f2f2f2;">
+    <noscript>Для работы необходим javascript :-(</noscript>
+    <div id="app">Загрузка…</div>
+  </body>
+
+  <script>
+    // Register SW
+    if (location.hostname != 'localhost' && 'serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+    }
+    // Handle install prompt on desktop
+    window.addEventListener('beforeinstallprompt', function (e) {
+      e.preventDefault()
+      e.prompt()
+        // Preventing DOMException message in console.
+        .catch(err => {})
+    })
+  </script>
+</html>
