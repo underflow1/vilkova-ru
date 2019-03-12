@@ -35,6 +35,15 @@
           </section>
           <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
             <i
+              v-show="$route.name !== 'home'"
+              @click="gotoHome"
+              class="material-icons mdc-top-app-bar__action-item"
+              aria-label="Обложка"
+              title="Обложка"
+            >
+              home
+            </i>
+            <i
               @click="gotoOrder"
               class="material-icons mdc-top-app-bar__action-item"
               aria-label="Купить книгу"
