@@ -16,7 +16,7 @@ new Vue({
   // Small app can afford to pranks.
   data () {
     return {
-      book: data.book,
+      book: data.book.reverse(),
       title: document.title
     }
   }
