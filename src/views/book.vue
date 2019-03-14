@@ -44,34 +44,24 @@
 
     <h1>{{ data.title }}</h1>
 
-    <div
-      v-if="data.video"
-      class="video-panel"
-      ref="videoPanel"
-    >
-      <button
-        ref="buttonVideo"
-        @click="showVideoPanel"
-        class="mdc-button"
-        :class="{ 'hidden': videoState }"
+    <transition name="fade">
+      <div
+        v-if="data.video"
+        class="video-panel"
+        ref="videoPanel"
       >
-        <i class="mdc-button__icon material-icons">videocam</i>
-        <span class="mdc-button__label">Смотреть видео</span>
-      </button>
-
-      <transition name="fade">
         <iframe
           ref="videoIframe"
           :src="data.video"
-          :class="{ 'visible': videoState, 'hidden': !videoState }"
+          :class="{ 'visible': videoState }"
           frameborder="0"
           width="560"
           height="315"
           allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
           allowfullscreen
         />
-      </transition>
-    </div>
+      </div>
+    </transition>
 
     <p v-html="contentHtml"/>
     <p v-if="data.note">
@@ -97,8 +87,7 @@ export default {
       videoState: undefined,
       buttonShare: undefined,
       buttonPrev: undefined,
-      buttonNext: undefined,
-      buttonVideo: undefined
+      buttonNext: undefined
     }
   },
 
@@ -165,20 +154,23 @@ export default {
       this.$router.push(`/book/${index}`)
     },
 
-    showVideoPanel () {
+    showVideo () {
       // Determine needed iframe size
-      const panelRect = this.$refs.videoPanel.getBoundingClientRect()
+      const panelElem = this.$refs.videoPanel
+      const videoElem = this.$refs.videoIframe
 
-      const iframeElem = this.$refs.videoIframe
-      const iframeRect = iframeElem.getBoundingClientRect()
+      if (panelElem && videoElem) {
+        const panelRect = panelElem.getBoundingClientRect()
+        const videoRect = videoElem.getBoundingClientRect()
 
-      const w = panelRect.width
-      const h = iframeRect.height * panelRect.width / iframeRect.width
+        const w = panelRect.width
+        const h = videoRect.height * panelRect.width / videoRect.width
 
-      iframeElem.style.width = `${w}px`
-      iframeElem.style.height = `${h}px`
+        videoElem.style.width = `${w}px`
+        videoElem.style.height = `${h}px`
 
-      this.videoState = true
+        this.videoState = true
+      }
     }
   },
 
@@ -191,21 +183,20 @@ export default {
     this.buttonPrev.unbounded = true
     this.buttonNext.unbounded = true
 
-    this.buttonVideo = new MDCRipple(this.$refs.buttonVideo)
+    // Show video if presented
+    this.showVideo()
   },
 
   destroyed () {
     this.buttonShare.destroy()
     this.buttonPrev.destroy()
     this.buttonNext.destroy()
-    this.buttonVideo.destroy()
   }
 }
 </script>
 
 <style lang="scss">
   @import "~@/assets/theme";
-  @import "~@material/button/mdc-button";
   @import "~@material/icon-button/mdc-icon-button";
 
   hr {
@@ -220,17 +211,17 @@ export default {
     top: -2rem;
   }
 
-  .hidden {
-    opacity: 0 !important;
-    display: none !important;
-  }
-
-  .visible {
-    opacity: 1 !important;
-    display: initial !important;
-  }
-
   .video-panel {
     margin: 2rem 0;
+
+    iframe {
+      opacity: 0;
+      display: none;
+    }
+
+    iframe.visible {
+      opacity: 1;
+      display: initial;
+    }
   }
 </style>
