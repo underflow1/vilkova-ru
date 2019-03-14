@@ -44,6 +44,35 @@
 
     <h1>{{ data.title }}</h1>
 
+    <div
+      v-if="data.video"
+      class="video-panel"
+      ref="videoPanel"
+    >
+      <button
+        ref="buttonVideo"
+        @click="showVideoPanel"
+        class="mdc-button"
+        :class="{ 'hidden': videoState }"
+      >
+        <i class="mdc-button__icon material-icons">videocam</i>
+        <span class="mdc-button__label">Смотреть видео</span>
+      </button>
+
+      <transition name="fade">
+        <iframe
+          ref="videoIframe"
+          :src="data.video"
+          :class="{ 'visible': videoState, 'hidden': !videoState }"
+          frameborder="0"
+          width="560"
+          height="315"
+          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        />
+      </transition>
+    </div>
+
     <p v-html="contentHtml"/>
     <p v-if="data.note">
       <em>
@@ -65,9 +94,11 @@ export default {
   data () {
     return {
       book: this.$root.book,
+      videoState: undefined,
       buttonShare: undefined,
       buttonPrev: undefined,
-      buttonNext: undefined
+      buttonNext: undefined,
+      buttonVideo: undefined
     }
   },
 
@@ -132,6 +163,22 @@ export default {
     goto(step) {
       const index = this.index + step
       this.$router.push(`/book/${index}`)
+    },
+
+    showVideoPanel () {
+      // Determine needed iframe size
+      const panelRect = this.$refs.videoPanel.getBoundingClientRect()
+
+      const iframeElem = this.$refs.videoIframe
+      const iframeRect = iframeElem.getBoundingClientRect()
+
+      const w = panelRect.width
+      const h = iframeRect.height * panelRect.width / iframeRect.width
+
+      iframeElem.style.width = `${w}px`
+      iframeElem.style.height = `${h}px`
+
+      this.videoState = true
     }
   },
 
@@ -139,21 +186,26 @@ export default {
     this.buttonShare = new MDCRipple(this.$refs.buttonPrev)
     this.buttonPrev = new MDCRipple(this.$refs.buttonPrev)
     this.buttonNext = new MDCRipple(this.$refs.buttonNext)
+    
     this.buttonShare.unbounded = true
     this.buttonPrev.unbounded = true
     this.buttonNext.unbounded = true
+
+    this.buttonVideo = new MDCRipple(this.$refs.buttonVideo)
   },
 
   destroyed () {
     this.buttonShare.destroy()
     this.buttonPrev.destroy()
     this.buttonNext.destroy()
+    this.buttonVideo.destroy()
   }
 }
 </script>
 
 <style lang="scss">
   @import "~@/assets/theme";
+  @import "~@material/button/mdc-button";
   @import "~@material/icon-button/mdc-icon-button";
 
   hr {
@@ -166,5 +218,19 @@ export default {
     height: auto;
     position: relative;
     top: -2rem;
+  }
+
+  .hidden {
+    opacity: 0 !important;
+    display: none !important;
+  }
+
+  .visible {
+    opacity: 1 !important;
+    display: initial !important;
+  }
+
+  .video-panel {
+    margin: 2rem 0;
   }
 </style>
