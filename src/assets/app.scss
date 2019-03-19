@@ -21,20 +21,20 @@ body {
 }
 h1 {
   @include mdc-typography(headline1);
-  font-size: 2.5rem;
-  line-height: 2.5rem;
-  margin: 1rem 0 2rem;
-}
-h2 {
-  @include mdc-typography(headline2);
   font-size: 2rem;
   line-height: 2rem;
   margin: 1rem 0 2rem;
 }
-h3 {
+h2 {
   @include mdc-typography(headline2);
   font-size: 1.6rem;
   line-height: 1.6rem;
+  margin: 1rem 0 2rem;
+}
+h3 {
+  @include mdc-typography(headline2);
+  font-size: 1.2rem;
+  line-height: 1.2rem;
   margin: 1rem 0 2rem;
 }
 p {
