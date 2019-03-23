@@ -115,6 +115,28 @@ export default {
     }
   },
 
+  watch: {
+    form: {
+      deep: true,
+      handler (newVal) {
+        // Filter quantity
+        let v = newVal.quantity
+        if (v && parseInt(v) != v) {
+          newVal.quantity = v.substring(0, v.length - 1)
+        }
+        // TODO: format phone
+        /*
+        const phone = newVal.phone
+        v = phone.substr(phone.length - 1, 1)
+        if (v && parseInt(v) != v) {
+          newVal.phone = v.substring(0, phone.length - 1)
+        }
+        let phone = ''
+        */
+      }
+    }
+  },
+
   methods: {
     sendOrder () {
       this.form.created = new Date()
@@ -173,7 +195,7 @@ export default {
   bottom: 0;
   left: 0;
   z-index: 1000;
-  padding: 1em;
+  padding: 0 0 1rem 1rem;
 
   form, .order-sended-message {
     max-width: 550px;
