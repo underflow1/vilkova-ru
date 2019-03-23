@@ -71,7 +71,8 @@
     <!-- ORDER -->
     <transition name="fade">
       <order
-        v-show="showOrder"
+        v-if="showOrder"
+        :key="uniqueTimeKey"
         @close="showOrder = false"
       />
     </transition>
@@ -102,6 +103,11 @@ export default {
         home: (this.$route.name === 'home'),
         book: (this.$route.name === 'book'),
       }
+    },
+
+    uniqueTimeKey () {
+      const d = new Date()
+      return d.getTime()
     }
   },
 
