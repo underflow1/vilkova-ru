@@ -19,13 +19,13 @@
       <h1>Купить книгу</h1>
 
       <p>
-        Стоимость книги: <big>{{ bookPrice }} руб.</big>,<br>
+        Стоимость одной книги: <big>{{ bookPrice }} руб.</big>,<br>
         доставка по&nbsp;Москве: <big>{{ deliveryPrice }}&nbsp;руб.</big>
       </p>
 
-      <p>
+      <!--p>
         Укажите, пожалуйста, контактные данные и&nbsp;количество книг:
-      </p>
+      </p-->
 
       <div class="input" style="margin-top: 2rem;">
         <div ref="nameTextfield" class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon">
@@ -110,7 +110,7 @@ export default {
         name: undefined,
         phone: undefined,
         email: undefined,
-        quantity: undefined
+        quantity: 1
       }
     }
   },
