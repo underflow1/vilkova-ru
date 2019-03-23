@@ -19,7 +19,7 @@
       <h1>Купить книгу</h1>
 
       <p>
-        Стоимость одной книги: <big>{{ bookPrice }} руб.</big>,<br>
+        Стоимость одной книги: <big>{{ bookPrice }}&nbsp;руб.</big>,<br>
         доставка по&nbsp;Москве: <big>{{ deliveryPrice }}&nbsp;руб.</big>
       </p>
 
@@ -75,7 +75,7 @@
           <div class="mdc-notched-outline">
             <div class="mdc-notched-outline__leading"></div>
             <div class="mdc-notched-outline__notch">
-              <label for="tf-outlined" class="mdc-floating-label" min="1" required>Количество</label>
+              <label class="mdc-floating-label" min="1" required>Количество</label>
             </div>
             <div class="mdc-notched-outline__trailing"></div>
           </div>
@@ -166,7 +166,7 @@ export default {
 @import "~@material/textfield/helper-text/mdc-text-field-helper-text";
 
 .order {
-  position: absolute;
+  position: fixed;
   background-color: rgba($color: #ffffff, $alpha: 1);
   top: 0;
   right: 0;
