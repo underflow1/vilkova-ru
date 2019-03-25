@@ -1,7 +1,7 @@
 <template>
   <div class="order">
     <button
-      ref="closeButton"
+      ref="closeButton1"
       @click="$emit('close')"
       class="mdc-icon-button material-icons mdc-icon-button--close"
     >
@@ -9,9 +9,19 @@
     </button>
 
     <transition name="fade">
-      <div v-if="orderSended" class="order-sended-message">
+      <div v-show="orderSended" class="order-sended-message">
         <h2>Заказ принят!</h2>
-        <p>Курьер перезвонит вам по&nbsp;номеру {{ form.phone }} и&nbsp;договорится о&nbsp;встрече.</p>
+        <p>
+          Курьер перезвонит вам по&nbsp;номеру {{ form.phone }}
+          и&nbsp;договорится о&nbsp;встрече.
+        </p>
+        <button
+          ref="closeButton2"
+          @click="$emit('close')"
+          class="mdc-button mdc-button--unelevated"
+        >
+          <span class="mdc-button__label">OK</span>
+        </button>
       </div>
     </transition>
     
@@ -19,7 +29,7 @@
       <h1>Купить книгу</h1>
 
       <p>
-        Стоимость одной книги: <big>{{ bookPrice }}&nbsp;руб.</big>,<br>
+        Стоимость одной книги: <big>{{ bookPrice }}&nbsp;руб.</big><br>
         доставка по&nbsp;Москве: <big>{{ deliveryPrice }}&nbsp;руб.</big>
       </p>
 
@@ -43,7 +53,7 @@
       <div class="input">
         <div ref="phoneTextfield" class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon">
           <i class="material-icons mdc-text-field__icon">phone</i>
-          <input v-model="form.phone" type="tel" class="mdc-text-field__input" required>
+          <input v-model="form.phone" type="text" class="mdc-text-field__input" required>
           <div class="mdc-notched-outline">
             <div class="mdc-notched-outline__leading"></div>
             <div class="mdc-notched-outline__notch">
@@ -71,11 +81,11 @@
       </div>
       <div class="input">
         <div ref="quantityTextfield" class="mdc-text-field mdc-text-field--outlined">
-          <input v-model="form.quantity" type="number" class="mdc-text-field__input">
+          <input v-model="form.quantity" type="text" class="mdc-text-field__input">
           <div class="mdc-notched-outline">
             <div class="mdc-notched-outline__leading"></div>
             <div class="mdc-notched-outline__notch">
-              <label class="mdc-floating-label" min="1" required>Количество</label>
+              <label class="mdc-floating-label" required>Количество</label>
             </div>
             <div class="mdc-notched-outline__trailing"></div>
           </div>
@@ -90,6 +100,7 @@
         </button>
       </div>
     </form>
+    <footer v-show="ordersCount">{{ ordersCount }}</footer>
   </div>
 </template>
 
@@ -103,6 +114,7 @@ export default {
 
   data () {
     return {
+      ordersCount: undefined,
       bookPrice: 1000,
       deliveryPrice: 360,
       orderSended: undefined,
@@ -118,21 +130,20 @@ export default {
   watch: {
     form: {
       deep: true,
-      handler (newVal) {
+      handler (form) {
         // Filter quantity
-        let v = newVal.quantity
+        let v = form.quantity
         if (v && parseInt(v) != v) {
-          newVal.quantity = v.substring(0, v.length - 1)
+          form.quantity = v.substring(0, v.length - 1)
         }
-        // TODO: format phone
-        /*
-        const phone = newVal.phone
-        v = phone.substr(phone.length - 1, 1)
-        if (v && parseInt(v) != v) {
-          newVal.phone = v.substring(0, phone.length - 1)
+        if (v === '0') {
+          form.quantity = ''
         }
-        let phone = ''
-        */
+
+        // Filter phone
+        if (form.phone) {
+          form.phone = form.phone.replace(/[^0-9\-()+ ]/g, '')
+        }
       }
     }
   },
@@ -157,19 +168,30 @@ export default {
     }
   },
 
+  created () {
+    axios.get(`https://ruku.org/vilkova-book-info`)
+        .then(response => {
+          if(response.data.code === 'OK') {
+            this.ordersCount = response.data.ordersCount
+          }
+        })
+  },
+
   mounted () {
-    this.closeButton = new MDCRipple(this.$refs.closeButton)
+    this.closeButton1 = new MDCRipple(this.$refs.closeButton1)
+    this.closeButton2 = new MDCRipple(this.$refs.closeButton2)
     this.nameTextfield = new MDCTextField(this.$refs.nameTextfield)
     this.phoneTextfield = new MDCTextField(this.$refs.phoneTextfield)
     this.emailTextfield = new MDCTextField(this.$refs.emailTextfield)
     this.quantityTextfield = new MDCTextField(this.$refs.quantityTextfield)
     this.submitButton = new MDCRipple(this.$refs.submitButton)
 
-    this.closeButton.unbounded = true
+    this.closeButton1.unbounded = true
   },
 
   destroyed () {
-    this.closeButton.destroy()
+    this.closeButton1.destroy()
+    this.closeButton2.destroy()
     this.nameTextfield.destroy()
     this.phoneTextfield.destroy()
     this.emailTextfield.destroy()
@@ -202,16 +224,17 @@ export default {
     margin: 2rem auto 0 auto;
   }
 
+  .order-sended-message {
+    margin-top: 5rem;
+    width: 90%;
+  }
+
   p {
     margin: 1rem 0;
   }
 
   .input {
-    margin-top: 1rem;
-  }
-
-  .input {
-    margin-bottom: 1rem;
+    margin-top: 1.5rem;
   }
 
   .mdc-text-field {
@@ -220,6 +243,14 @@ export default {
 
   .mdc-icon-button--close {
     float: right;
+  }
+
+  footer {
+    position: fixed;
+    right: 10px;
+    bottom: 1px;
+    font-size: 80%;
+    color: #ccc;
   }
 }
 </style>
