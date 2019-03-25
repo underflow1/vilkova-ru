@@ -39,19 +39,18 @@
   <body class="mdc-typography" style="background-color: #f2f2f2;">
     <noscript>Для работы необходим javascript :-(</noscript>
     <div id="app">Загрузка…</div>
+    <script>
+      // Register SW
+      if (location.hostname != 'localhost' && 'serviceWorker' in navigator) {
+        navigator.serviceWorker.register('service-worker.js')
+      }
+      // Handle install prompt on desktop
+      window.addEventListener('beforeinstallprompt', function (e) {
+        e.preventDefault()
+        e.prompt()
+          // Preventing DOMException message in console.
+          .catch(err => {})
+      })
+    </script>
   </body>
-
-  <script>
-    // Register SW
-    if (location.hostname != 'localhost' && 'serviceWorker' in navigator) {
-      navigator.serviceWorker.register('service-worker.js')
-    }
-    // Handle install prompt on desktop
-    window.addEventListener('beforeinstallprompt', function (e) {
-      e.preventDefault()
-      e.prompt()
-        // Preventing DOMException message in console.
-        .catch(err => {})
-    })
-  </script>
 </html>
