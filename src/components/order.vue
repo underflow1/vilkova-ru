@@ -40,7 +40,7 @@
       <div class="input" style="margin-top: 2rem;">
         <div ref="nameTextfield" class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon">
           <i class="material-icons mdc-text-field__icon">perm_identity</i>
-          <input v-model="form.name" type="text" class="mdc-text-field__input" required>
+          <input v-model="form.name" type="text" class="mdc-text-field__input" autofocus required>
           <div class="mdc-notched-outline">
             <div class="mdc-notched-outline__leading"></div>
             <div class="mdc-notched-outline__notch">
@@ -53,7 +53,7 @@
       <div class="input">
         <div ref="phoneTextfield" class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon">
           <i class="material-icons mdc-text-field__icon">phone</i>
-          <input v-model="form.phone" type="text" class="mdc-text-field__input" required>
+          <input v-model="form.phone" type="tel" class="mdc-text-field__input" required>
           <div class="mdc-notched-outline">
             <div class="mdc-notched-outline__leading"></div>
             <div class="mdc-notched-outline__notch">
@@ -81,7 +81,7 @@
       </div>
       <div class="input">
         <div ref="quantityTextfield" class="mdc-text-field mdc-text-field--outlined">
-          <input v-model="form.quantity" type="text" class="mdc-text-field__input">
+          <input v-model="form.quantity" type="number" pattern="[0-9]*" inputmode="numeric" class="mdc-text-field__input" required>
           <div class="mdc-notched-outline">
             <div class="mdc-notched-outline__leading"></div>
             <div class="mdc-notched-outline__notch">
@@ -153,18 +153,23 @@ export default {
       this.form.created = new Date()
       this.form.amount = this.bookPrice * parseInt(this.form.quantity)
 
-      // Send order info to shop & client
-      // GET method selected coz of I dunno how to deal with old old old Laravel ;-\
-      const f = this.form
-      const qs = `name=${f.name}&phone=${f.phone}&email=${f.email}&quantity=${f.quantity}`
-        + `&amount=${f.amount}&deliveryPrice=${this.deliveryPrice}`
+      if (this.form.phone.length < 10) {
+        this.phoneTextfield.valid = false
+        this.phoneTextfield.focus()
+      } else {
+        // Send order info to shop & client
+        // GET method selected coz of I dunno how to deal with old old old Laravel ;-\
+        const f = this.form
+        const qs = `name=${f.name}&phone=${f.phone}&email=${f.email}&quantity=${f.quantity}`
+          + `&amount=${f.amount}&deliveryPrice=${this.deliveryPrice}`
 
-      axios.get(`https://ruku.org/vilkova-book-order?${qs}`)
-        .then(response => {
-          if(response.data.code === 'OK') {
-            this.orderSended = true
-          }
-        })
+        axios.get(`https://ruku.org/vilkova-book-order?${qs}`)
+          .then(response => {
+            if(response.data.code === 'OK') {
+              this.orderSended = true
+            }
+          })
+      }
     }
   },
 
