@@ -115,7 +115,7 @@ export default {
   data () {
     return {
       ordersCount: undefined,
-      bookPrice: 1000,
+      bookPrice: 500,
       deliveryPrice: 360,
       orderSended: undefined,
       form: {
