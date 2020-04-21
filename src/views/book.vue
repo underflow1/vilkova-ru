@@ -43,6 +43,8 @@
     </div>
 
     <h1>{{ data.title }}</h1>
+    <br>
+
 
     <transition name="fade">
       <div
@@ -62,6 +64,8 @@
         />
       </div>
     </transition>
+
+    <div v-if="data.image"><img :src="data.image"></div>
 
     <p v-html="contentHtml"/>
     <p v-if="data.note">
@@ -136,6 +140,7 @@ export default {
         return null
       }
     }
+
   },
 
   watch: {
