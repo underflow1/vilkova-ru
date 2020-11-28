@@ -73,6 +73,9 @@
         {{ data.note }}
       </em>
     </p>
+    <div v-if="data.bottomimage"><img :src="data.bottomimage"></div>
+    <div v-if="data.bottomimagesign"><h5>{{data.bottomimagesign}}</h5></div>
+
     <img src="@/assets/end.png" style="width: 44px; height: 71px;" class="end"/>
   </div>
 </template>
@@ -183,7 +186,7 @@ export default {
     this.buttonShare = new MDCRipple(this.$refs.buttonPrev)
     this.buttonPrev = new MDCRipple(this.$refs.buttonPrev)
     this.buttonNext = new MDCRipple(this.$refs.buttonNext)
-    
+
     this.buttonShare.unbounded = true
     this.buttonPrev.unbounded = true
     this.buttonNext.unbounded = true
