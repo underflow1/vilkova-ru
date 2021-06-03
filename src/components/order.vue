@@ -1,5 +1,6 @@
 <template>
-  <div class="order">
+  <div class="order" >
+  
     <button
       ref="closeButton1"
       @click="$emit('close')"
@@ -24,13 +25,19 @@
         </button>
       </div>
     </transition>
-    
-    <form v-if="!orderSended" @submit.prevent="sendOrder">
+    <div style="overflow:auto;">
+    <form v-if="!orderSended" @submit.prevent="sendOrder" style="height:100%;">
+	
+	
+<div class="mdc-tab-scroller" style="">
+  <div class="mdc-tab-scroller__scroll-area" style="">
+    <div class="mdc-tab-scroller__scroll-content" style="/*overflow:auto;*/height: fit-content;overflow:auto;">
+	
       <h1>Купить книгу</h1>
 
       <p>
         Стоимость одной книги: <big>{{ bookPrice }}&nbsp;руб.</big><br>
-        доставка по&nbsp;Москве: <big>{{ deliveryPrice }}&nbsp;руб.</big>
+        Доставка по&nbsp;Москве (в пределах МКАД): <big>{{ deliveryPrice }}&nbsp;руб.</big>
       </p>
 
       <!--p>
@@ -99,8 +106,13 @@
           <span class="mdc-button__label">Отправить заказ</span>
         </button>
       </div>
+		<br><br>
+</div>
+  </div>
+</div>
     </form>
     <footer v-show="ordersCount">{{ ordersCount }}</footer>
+</div>
   </div>
 </template>
 
@@ -179,7 +191,20 @@ export default {
           if(response.data.code === 'OK') {
             this.ordersCount = response.data.ordersCount
           }
-        })
+        });
+		
+		/*
+		$element.bind('touchmove', function (e) {
+			console.log(e.touches[0].pageY,e.touches[0].clientY);
+		});*/
+		/*
+		window.onscroll = function() {
+			var scrolled = window.pageYOffset || document.documentElement.scrollTop;
+			console.log(scrolled);
+		}
+		*/
+		
+		
   },
 
   mounted () {
@@ -223,6 +248,13 @@ export default {
   left: 0;
   z-index: 1000;
   padding: 0 0 1rem 1rem;
+  height:100%;
+  overflow: auto;
+  /* 
+  max-height:100vh;
+  */
+  
+  }
 
   form, .order-sended-message {
     max-width: 550px;
@@ -257,5 +289,5 @@ export default {
     font-size: 80%;
     color: #ccc;
   }
-}
+
 </style>

@@ -48,5 +48,73 @@
           .catch(err => {})
       })
     </script>
+	
+	<script src="/js/jquery.min.js"></script>
+	<script src="/js/swipe/jquery.touchSwipe.min.js"></script>
+	<script>
+
+            $("body").swipe( {fingers:1} );
+			/*
+            $("body").swipe( {
+                //Generic swipe handler for all directions
+                swipe:function(event, direction, distance, duration, fingerCount, fingerData) {
+                    //$(this).text("You swiped " + direction );
+
+
+                    var fp = flatpickr("#booking_form_date",calendar_config);
+                    //var fp = flatpickr(yourElement, config);
+
+                    if (direction != ''){
+                        switch(direction){
+                            case 'left':
+                                //alert(direction);
+                                //var fp = flatpickr(yourElement, config);
+                                countFlatpickrMonth = countFlatpickrMonth + 1;
+                                if (countFlatpickrMonth > 2) countFlatpickrMonth = 2;
+                                fp.changeMonth(countFlatpickrMonth);
+
+                                //fp.redraw();
+                                break;
+
+                            case 'right':
+                                // alert(direction);
+                                //var fp = flatpickr(yourElement, config);
+                                countFlatpickrMonth = countFlatpickrMonth - 1;
+                                if (countFlatpickrMonth < 0) countFlatpickrMonth = 0;
+                                fp.changeMonth(countFlatpickrMonth);
+                                //fp.redraw();
+                                break;
+                        }
+                    }
+
+                    if (direction != ''){
+                        switch(direction){
+                            case 'up':
+                                alert(direction+'|'+distance);
+								//window.pageYOffset = window.pageYOffset + distance;
+			
+								window.scrollTo(window.pageXOffset, window.pageYOffset + distance);	
+									
+							
+							break;
+
+                            case 'down':
+                                 alert(direction+'|'+distance);
+								// window.pageYOffset = window.pageYOffset - distance;
+										
+										window.scrollTo(window.pageXOffset, window.pageYOffset + distance);	
+                            break;
+                        }
+                    }
+
+
+
+                }
+            });
+*/
+
+
+	</script>
+	
   </body>
 </html>

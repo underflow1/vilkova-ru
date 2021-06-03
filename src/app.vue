@@ -84,6 +84,7 @@ import { MDCTopAppBar } from '@material/top-app-bar'
 import { MDCDrawer } from '@material/drawer'
 import Order from '@/components/order'
 
+
 export default {
   name: 'App',
   components: { Order },
@@ -135,10 +136,12 @@ export default {
   },
 
   mounted () {
+
     this.drawer = new MDCDrawer(this.$refs.drawer)
     this.topAppBar = new MDCTopAppBar(this.$refs.topappbar)
     this.topAppBar.setScrollTarget(this.$refs.content)
     this.topAppBar.listen('MDCTopAppBar:nav', () => (this.drawer.open = !this.drawer.open))
+	
   },
 
   destroyed () {
@@ -157,7 +160,18 @@ export default {
 @import "~@material/drawer/mdc-drawer";
 @import "~@material/list/mdc-list";
 
+
 @import "./assets/app";
+
+body {
+	height:100%;
+}
+
+#app {
+    width: 100%;
+    overflow-y: auto;
+	height: 100vh;
+}
 
 .fade-enter-active {
   transition: opacity .3s ease;
