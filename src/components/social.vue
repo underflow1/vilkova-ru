@@ -4,10 +4,17 @@
     :title="title"
     inline-template
   >
-    <network network="facebook">
+
+<!--      <network network="facebook">
+        share
+      </network>-->
+    <span data-link="#share-facebook">
       share
-    </network>
+    </span>
+
   </social-sharing>
+
+
 </template>
 
 <script>

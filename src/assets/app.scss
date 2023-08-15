@@ -95,3 +95,39 @@ p {
     right: 1.5rem;
   }
 }
+
+
+.my-notification {
+  // styling
+  margin: 0 5px 5px;
+  padding: 9px 67px;
+  font-size: .875rem;
+  color: #ffffff;
+  font-family: Roboto,sans-serif;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.375rem;
+  font-weight: 500;
+  letter-spacing: .00714em;
+  text-decoration: inherit;
+  text-transform: inherit;
+  height: 40px;
+
+
+  // types (green, amber, red)
+  &.success {
+    background: #bc477b;
+    opacity: .89;
+    border-radius: 8px;
+  }
+
+  &.warn {
+    background: #ffb648;
+    border-left-color: #f48a06;
+  }
+
+  &.error {
+    background: #E54D42;
+    border-left-color: #B82E24;
+  }
+}

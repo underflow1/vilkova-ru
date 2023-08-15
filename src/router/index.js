@@ -5,7 +5,7 @@ Vue.use(Router)
 
 const routerOptions = [
   { name: 'home', path: '/', component: 'home' },
-  { name: 'book', path: '/book/:index', component: 'book' },
+  { name: 'book', path: '/book/:index', component: 'book'  },
   { path: '*', component: 'error-404' }
 ]
 

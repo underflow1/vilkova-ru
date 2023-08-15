@@ -175,7 +175,7 @@ export default {
         const qs = `name=${f.name}&phone=${f.phone}&email=${f.email}&quantity=${f.quantity}`
           + `&amount=${f.amount}&deliveryPrice=${this.deliveryPrice}`
 
-        axios.get(`https://vilkova.ru/api/vilkova-book-order?${qs}`)
+        axios.get(`https://ruku.org/vilkova-book-order?${qs}`)
           .then(response => {
             if(response.data.code === 'OK') {
               this.orderSended = true
@@ -186,7 +186,7 @@ export default {
   },
 
   created () {
-    axios.get(`https://vilkova.ru/api/vilkova-book-info`)
+    axios.get(`https://ruku.org/vilkova-book-info`)
         .then(response => {
           if(response.data.code === 'OK') {
             this.ordersCount = response.data.ordersCount

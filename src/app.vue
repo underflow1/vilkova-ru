@@ -1,5 +1,7 @@
 <template>
   <div id="app">
+    <notifications position="top center" classes="my-notification" />
+
     <aside ref="drawer" class="mdc-drawer mdc-drawer--modal">
       <div class="mdc-drawer__content">
         <nav class="mdc-list">
@@ -12,11 +14,12 @@
           </span>
           <hr class="mdc-list-divider">
           <h6 class="mdc-list-group__subheader">Оглавление</h6>
+
           <span
-            v-for="(o, i) in book"
-            :key="`book-nav-${i}`"
-            @click="gotoBook(i)"
-            class="mdc-list-item"
+              v-for="(o, i) in bookArray"
+              :key="`book-nav-${i}`"
+              @click="gotoBook(o.routeId)"
+              class="mdc-list-item"
           >
             {{ o.title }}
           </span>
@@ -106,6 +109,24 @@ export default {
       }
     },
 
+    bookItemsReverse() {
+      var items = this.book;
+      items.reverse()
+      return items
+    },
+    bookArray: function () {
+      var arr = [];
+      this.bookItemsReverse.forEach(function (item) {
+        var key = Object.keys(item);
+        key = key[0]
+        arr.push({
+          routeId: key,
+          title:item[key]["title"]
+        });
+      });
+      return arr
+    },
+
     uniqueTimeKey () {
       const d = new Date()
       return d.getTime()
@@ -132,6 +153,10 @@ export default {
     gotoBook (index) {
       this.drawer.open = false
       this.$router.push(`/book/${index}`)
+    },
+    gotoFirst () {
+      var routeId = Object.keys(this.book[0])[0];
+      this.$router.push(`/book/${routeId}`)
     }
   },
 

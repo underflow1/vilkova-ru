@@ -3,6 +3,9 @@ import App from './app'
 import router from './router'
 
 import data from '@/data'
+import Notifications from 'vue-notification'
+
+Vue.use(Notifications)
 
 Vue.config.productionTip = false
 
@@ -16,7 +19,8 @@ new Vue({
   // Small app can afford to pranks.
   data () {
     return {
-      book: data.book.reverse(),
+    /*  book: data.book.reverse(),*/
+      book: data.book,
       title: document.title
     }
   }

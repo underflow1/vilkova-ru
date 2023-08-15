@@ -2,40 +2,42 @@
   <div>
     <div class="mdc-layout-grid__inner">
       <div
-        class="
+          class="
           mdc-layout-grid__cell
           mdc-layout-grid__cell--span-2-phone
           mdc-layout-grid__cell--span-6-desktop
         "
       >
         <button
-          ref="buttonShare"
-          class="mdc-icon-button material-icons"
+            @click="copyLink()"
+            ref="buttonShare"
+            class="mdc-icon-button material-icons"
+
         >
           <social :url="url" :title="title"/>
         </button>
       </div>
       <div
-        class="
+          class="
           mdc-layout-grid__cell
           mdc-layout-grid__cell--span-2-phone
           mdc-layout-grid__cell--span-6-desktop
         "
-        style="text-align: right"
+          style="text-align: right"
       >
         <button
-          ref="buttonPrev"
-          :disabled="!canGotoPrev"
-          @click="goto(-1)"
-          class="mdc-icon-button material-icons"
+            ref="buttonPrev"
+            :disabled="!canGotoPrev"
+            @click="goto(-1)"
+            class="mdc-icon-button material-icons"
         >
           arrow_back
         </button>
         <button
-          ref="buttonNext"
-          :disabled="!canGotoNext"
-          @click="goto(1)"
-          class="mdc-icon-button material-icons"
+            ref="buttonNext"
+            :disabled="!canGotoNext"
+            @click="goto(1)"
+            class="mdc-icon-button material-icons"
         >
           arrow_forward
         </button>
@@ -48,19 +50,19 @@
 
     <transition name="fade">
       <div
-        v-if="data.video"
-        class="video-panel"
-        ref="videoPanel"
+          v-if="data.video"
+          class="video-panel"
+          ref="videoPanel"
       >
         <iframe
-          ref="videoIframe"
-          :src="data.video"
-          :class="{ 'visible': videoState }"
-          frameborder="0"
-          width="560"
-          height="315"
-          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen
+            ref="videoIframe"
+            :src="data.video"
+            :class="{ 'visible': videoState }"
+            frameborder="0"
+            width="560"
+            height="315"
+            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
         />
       </div>
     </transition>
@@ -83,6 +85,7 @@
 <script>
 import { MDCRipple } from '@material/ripple'
 import Social from '@/components/social'
+import copy from 'copy-to-clipboard';
 
 export default {
   name: 'Book',
@@ -102,7 +105,7 @@ export default {
     url: {
       cache: false,
       get () {
-        return 'https://vilkova.ru/book/' + this.index
+        return 'https://vilkova.ru/book/' + this.routeId
       }
     },
 
@@ -113,13 +116,25 @@ export default {
       }
     },
 
+    routeId () {
+      return this.$route.params.index
+    },
+
     index () {
-      return parseInt(this.$route.params.index)
+      var routeId = this.routeId;
+      var items = this.book;
+      var IndexBook = null;
+      items.forEach(function (item, i) {
+        if (item[routeId]){
+          IndexBook = i;
+        }
+      });
+      return parseInt(IndexBook)
     },
 
     data () {
       if (this.index < this.book.length) {
-        return this.book[this.index]
+        return this.book[this.index][this.routeId]
       } else {
         // Elegant ;-)
         location.href = '/'
@@ -138,7 +153,7 @@ export default {
     contentHtml () {
       if (this.data && this.data.content) {
         return this.data.content
-          .replace(/\n/g, '<br>')
+            .replace(/\n/g, '<br>')
       } else {
         return null
       }
@@ -159,7 +174,8 @@ export default {
   methods: {
     goto(step) {
       const index = this.index + step
-      this.$router.push(`/book/${index}`)
+      var routeId = Object.keys(this.book[index])[0];
+      this.$router.push(`/book/${routeId}`)
     },
 
     showVideo () {
@@ -179,6 +195,15 @@ export default {
 
         this.videoState = true
       }
+    },
+    copyLink () {
+      copy(this.url, {
+      });
+      this.$notify({
+        type: 'success',
+        duration: 1000,
+        text: 'Ссылка скопирована!'
+      });
     }
   },
 
@@ -204,32 +229,32 @@ export default {
 </script>
 
 <style lang="scss">
-  @import "~@/assets/theme";
-  @import "~@material/icon-button/mdc-icon-button";
+@import "~@/assets/theme";
+@import "~@material/icon-button/mdc-icon-button";
 
-  hr {
-    border: 0;
-    background: none;
-    border-top: 1px solid #ddd;
+hr {
+  border: 0;
+  background: none;
+  border-top: 1px solid #ddd;
+}
+
+.end {
+  height: auto;
+  position: relative;
+  top: -2rem;
+}
+
+.video-panel {
+  margin: 2rem 0;
+
+  iframe {
+    opacity: 0;
+    display: none;
   }
 
-  .end {
-    height: auto;
-    position: relative;
-    top: -2rem;
+  iframe.visible {
+    opacity: 1;
+    display: initial;
   }
-
-  .video-panel {
-    margin: 2rem 0;
-
-    iframe {
-      opacity: 0;
-      display: none;
-    }
-
-    iframe.visible {
-      opacity: 1;
-      display: initial;
-    }
-  }
+}
 </style>

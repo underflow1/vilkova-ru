@@ -16,7 +16,7 @@
     </div>
     <div style="text-align: center; margin: 1rem 0;">
       <button
-        @click="$router.push('/book/0')"
+        @click="$parent.gotoFirst()"
         class="mdc-button"
       >
         Читать стихи
