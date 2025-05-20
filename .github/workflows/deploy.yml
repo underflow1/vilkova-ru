@@ -1,0 +1,39 @@
+name: Deploy to Server
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ github.ref_name == 'main' && 'production' || 'development' }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set Server Address and PM2 Config based on branch
+        run: |
+          REPO_NAME=${{ github.repository }}
+          REPO_NAME=${REPO_NAME#*/}
+          echo "Имя репозитория (через github.repository): ${REPO_NAME}"
+          echo "REPO_NAME=${REPO_NAME}" >> $GITHUB_ENV
+          echo "SERVER_ADDRESS=${{ vars.PROD_SERVER_ADDRESS }}" >> $GITHUB_ENV
+        shell: bash
+
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Upload deploy script to server
+        run: |
+          scp -o StrictHostKeyChecking=accept-new deploy.sh ${{ secrets.SSH_USERNAME }}@${{ env.SERVER_ADDRESS }}:/home/${{ secrets.SSH_USERNAME }}/${REPO_NAME}/deploy.sh || { echo "Ошибка: Не удалось загрузить скрипт деплоя"; exit 1; }
+          ssh -o StrictHostKeyChecking=accept-new ${{ secrets.SSH_USERNAME }}@${{ env.SERVER_ADDRESS }} "chmod +x /home/${{ secrets.SSH_USERNAME }}/${REPO_NAME}/deploy.sh" || { echo "Ошибка: Не удалось установить права на скрипт деплоя"; exit 1; }
+        shell: bash
+
+      - name: Execute deploy script on server
+        run: |
+          ssh -o StrictHostKeyChecking=accept-new ${{ secrets.SSH_USERNAME }}@${{ env.SERVER_ADDRESS }} "GITHUB_REPOSITORY=${REPO_NAME} GITHUB_REF_NAME=${{ github.ref_name }} /home/${{ secrets.SSH_USERNAME }}/${REPO_NAME}/deploy.sh" || { echo "Ошибка: Не удалось выполнить скрипт деплоя"; exit 1; }
+        shell: bash
