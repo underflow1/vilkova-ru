@@ -10,6 +10,9 @@ if [ -z "$REPO_DIR" ] || [ -z "$BRANCH" ]; then
   exit 1
 fi
 
+echo '-> export NVM_DIR' && export NVM_DIR=/home/vilkova/.nvm && \
+echo '-> run \$NVM_DIR/nvm.s' && [ -s "\$NVM_DIR/nvm.sh" ] && \. "\$NVM_DIR/nvm.sh" && \
+
 echo "-> Переходим в папку репозитория ${REPO_DIR}"
 cd "$REPO_DIR" || { echo "Ошибка: Директория $REPO_DIR не найдена"; exit 1; }
 
