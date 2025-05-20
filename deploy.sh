@@ -7,11 +7,13 @@ DESTINATION="/var/www/vilkova.ru"
 
 if [ -z "$REPO_DIR" ] || [ -z "$BRANCH" ]; then
   echo "Ошибка: Не установлены необходимые переменные окружения."
-  exit 1
+#  exit 1
 fi
 
-echo '-> export NVM_DIR' && export NVM_DIR=/home/vilkova/.nvm && \
-echo '-> run \$NVM_DIR/nvm.s' && [ -s "\$NVM_DIR/nvm.sh" ] && \. "\$NVM_DIR/nvm.sh" && \
+echo '-> export NVM_DIR'
+export NVM_DIR=/home/vilkova/.nvm
+echo '-> run $NVM_DIR/nvm.sh'
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
 echo "-> Переходим в папку репозитория ${REPO_DIR}"
 cd "$REPO_DIR" || { echo "Ошибка: Директория $REPO_DIR не найдена"; exit 1; }
@@ -35,6 +37,6 @@ echo "-> Сборка проекта"
 npm run build || { echo "Ошибка: Не удалось собрать проект"; exit 1; }
 
 echo "-> Копируем проект в папку назначения"
-cp -r dist/* ${DESTINATION} || { echo "Ошибка: Не удалось скопировать файлы"; exit 1; }
+cp -r dist/* "${DESTINATION}" || { echo "Ошибка: Не удалось скопировать файлы"; exit 1; }
 
 echo "Деплой успешно завершён!"
