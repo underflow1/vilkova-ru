@@ -76,6 +76,7 @@
       </em>
     </p>
     <div v-if="data.bottomimage"><img :src="data.bottomimage"></div>
+    <div v-if="data.bottomimage2"><img :src="data.bottomimage2"></div>
     <div v-if="data.bottomimagesign"><h5>{{data.bottomimagesign}}</h5></div>
 
     <img src="@/assets/end.png" style="width: 44px; height: 71px;" class="end"/>
